@@ -1,0 +1,47 @@
+name: Reusable Test Workflow
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: "Mühit adı (məs. dev, staging, prod)"
+        required: false
+        type: string
+        default: "dev"
+      greeting:
+        description: "Göstəriləcək mesaj"
+        required: false
+        type: string
+        default: "Salam"
+      os:
+        description: "Runner OS"
+        required: false
+        type: string
+        default: "ubuntu-latest"
+    outputs:
+      result:
+        description: "Test nəticəsi"
+        value: ${{ jobs.test.outputs.result }}
+
+jobs:
+  test:
+    runs-on: ${{ inputs.os }}
+    outputs:
+      result: ${{ steps.run.outputs.result }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Inputları göstər
+        run: |
+          echo "Environment: ${{ inputs.environment }}"
+          echo "Greeting:    ${{ inputs.greeting }}"
+          echo "Caller repo: ${{ github.repository }}"
+          echo "Triggered by: ${{ github.actor }}"
+
+      - name: Test skriptini işə sal
+        id: run
+        run: |
+          chmod +x scripts/test.sh
+          ./scripts/test.sh "${{ inputs.greeting }}" "${{ inputs.environment }}"
+          echo "result=passed-${{ inputs.environment }}" >> "$GITHUB_OUTPUT"
