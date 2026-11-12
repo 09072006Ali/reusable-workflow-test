@@ -1,12 +1,12 @@
 # reusable-workflow-test
 
-GitHub Actions **reusable workflow** üçün test reposu.
+A test repository for GitHub Actions **reusable workflows**.
 
-- `.github/workflows/reusable-test.yml` — `workflow_call` ilə çağırılan reusable workflow (inputs + outputs).
-- `.github/workflows/ci.yml` — reusable workflow-u iki fərqli mühitlə çağırır.
-- `scripts/test.sh` — sadə test skripti.
+- `.github/workflows/reusable-test.yml` — a reusable workflow triggered via `workflow_call` (with inputs and outputs).
+- `.github/workflows/ci.yml` — calls the reusable workflow for two different environments.
+- `scripts/test.sh` — a simple test script.
 
-## Başqa repodan istifadə
+## Usage from another repository
 
 ```yaml
 jobs:
@@ -14,7 +14,7 @@ jobs:
     uses: 09072006Ali/reusable-workflow-test/.github/workflows/reusable-test.yml@main
     with:
       environment: prod
-      greeting: "Salam!"
+      greeting: "Hello!"
 ```
 
-> Qeyd: başqa repodan çağırmaq üçün bu repo public olmalıdır.
+> Note: this repository must be public to be called from other repositories.
